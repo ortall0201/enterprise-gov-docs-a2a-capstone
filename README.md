@@ -835,11 +835,15 @@ python main.py
 - **Docs Translator (Original SaaS)**: https://github.com/ortall0201/Docs_Translator
 - **Production SaaS Deployment**: https://docs-translator.onrender.com
 
+### Capstone Submission
+
+- **Kaggle Writeup**: https://www.kaggle.com/competitions/agents-intensive-capstone-project/writeups/vaas-vendor-as-a-service-for-secure-enterprise-ai
+
 ### Resources
 
 - **Google ADK Docs**: https://googleapis.github.io/python-genai/adk/
 - **A2A Protocol**: https://github.com/googleapis/python-genai/tree/main/google/genai/adk/a2a
-- **Kaggle Course**: https://www.kaggle.com/
+- **Kaggle AI Agents Intensive**: https://www.kaggle.com/learn-guide/5-day-genai
 - **Get Google API Key**: https://aistudio.google.com/app/apikey
 
 ---
@@ -900,6 +904,15 @@ Apache License 2.0 - See [LICENSE](LICENSE) file for details.
 - **Google**: Agent Development Kit (ADK) framework
 - **Course Instructors**: Day 5 A2A protocol breakthrough
 - **Docs Translator**: Real-world vendor inspiration
+
+---
+
+## 👥 Contributors
+
+This project was developed by:
+
+- **Ortal Lasry** - [LinkedIn](https://www.linkedin.com/in/ortal-lasry-3232252b6)
+- **Nikhil Mahajan** - [LinkedIn](https://www.linkedin.com/in/nikhil-mahajan-611a74253/)
 
 ---
 
