@@ -12,8 +12,8 @@ This agent demonstrates the A2A boundary between internal government systems
 and external vendor services.
 """
 
-from google.genai.adk.agents import LlmAgent
-from google.genai.adk.models.google_llm import Gemini
+from google.adk.agents import LlmAgent
+from google.adk.models.google_llm import Gemini
 from tools.ocr_tool import ocr_tool
 from security.policy import security_filter
 

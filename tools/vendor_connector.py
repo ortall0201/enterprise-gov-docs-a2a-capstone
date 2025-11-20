@@ -15,7 +15,7 @@ For this POC, it points to a local simulation running on localhost:8001.
 """
 
 import os
-from google.genai.adk.agents.remote_a2a_agent import (
+from google.adk.agents.remote_a2a_agent import (
     RemoteA2aAgent,
     AGENT_CARD_WELL_KNOWN_PATH
 )

@@ -12,8 +12,8 @@ This is the entry point for all documents entering the government system.
 
 import os
 from datetime import datetime, timezone
-from google.genai.adk.agents import LlmAgent
-from google.genai.adk.models.google_llm import Gemini
+from google.adk.agents import LlmAgent
+from google.adk.models.google_llm import Gemini
 
 
 def create_intake_agent(model: str = "gemini-2.0-flash-lite") -> LlmAgent:
