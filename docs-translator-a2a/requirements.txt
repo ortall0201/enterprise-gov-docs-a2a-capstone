@@ -1,25 +1,25 @@
-# A2A VaaS Service Dependencies
-# Core frameworks
-fastapi>=0.115.0
-uvicorn[standard]>=0.30.0
-pydantic>=2.9.0
+# Minimal A2A VaaS Service Dependencies (Render-optimized)
+# These are the ONLY dependencies actually used in the code
 
-# CrewAI for agent orchestration (use installed versions)
-crewai>=0.157.0
-crewai-tools>=0.75.0
+# Core web framework
+fastapi==0.115.0
+uvicorn[standard]==0.30.1
+pydantic==2.9.2
 
-# LLM providers
-openai>=1.50.0
-google-cloud-aiplatform>=1.70.0
+# LLM provider (only OpenAI is used)
+openai==1.50.2
 
 # Utilities
 python-dotenv==1.0.0
-python-multipart==0.0.6
+python-multipart==0.0.12
 
-# Logging and monitoring
-structlog==23.2.0
+# HTTP client (for testing)
+httpx==0.27.2
+requests==2.32.3
 
-# Testing
-pytest==7.4.3
-pytest-asyncio==0.21.1
-httpx==0.25.2
+# REMOVED (not used in actual code):
+# - crewai (not used - direct OpenAI calls instead)
+# - crewai-tools (not used)
+# - google-cloud-aiplatform (not used)
+# - structlog (not used - using standard logging)
+# - pytest (not needed for production deployment)

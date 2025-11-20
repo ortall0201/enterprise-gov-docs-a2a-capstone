@@ -1,0 +1,46 @@
+services:
+  - type: web
+    name: docs-translator-a2a
+    runtime: python
+    plan: free  # Change to 'starter' or higher for production
+    region: oregon  # Change to your preferred region
+    branch: main
+
+    # Build settings
+    buildCommand: pip install --upgrade pip && pip install -r requirements.txt
+    startCommand: python src/a2a_server.py
+
+    # Environment variables
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+
+      - key: OPENAI_API_KEY
+        sync: false  # Set this in Render dashboard (secret)
+
+      - key: OPENAI_MODEL
+        value: gpt-4o
+
+      - key: A2A_SERVICE_HOST
+        value: 0.0.0.0
+
+      - key: A2A_SERVICE_PORT
+        value: 8001
+
+      - key: LOG_LEVEL
+        value: INFO
+
+      - key: VENDOR_NAME
+        value: Docs Translator
+
+      - key: VENDOR_URL
+        value: https://docs-translator-a2a.onrender.com
+
+      - key: VENDOR_CONTACT
+        value: support@docs-translator.com
+
+    # Health check
+    healthCheckPath: /health
+
+    # Auto-deploy settings
+    autoDeploy: true
