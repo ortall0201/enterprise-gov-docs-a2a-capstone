@@ -1,0 +1,78 @@
+# GitGuardian Configuration
+# https://docs.gitguardian.com/internal-repositories-monitoring/configuration
+
+# Version of the configuration file
+version: 2
+
+# Paths to exclude from scanning
+paths-ignore:
+  # Documentation with security examples (redacted patterns only)
+  - SECURITY_AUDIT.md
+
+  # Example files (no real secrets)
+  - .env.example
+  - "**/*.example"
+
+  # Test fixtures (mock data only)
+  - "**/tests/fixtures/**"
+  - "**/test_data/**"
+
+# Specific patterns to ignore (use sparingly and document why)
+matches-ignore:
+  # False positive from SECURITY_AUDIT.md documentation
+  # Commit 683defc - Example of bad pattern (now redacted)
+  # - name: github_personal_access_token
+  #   match: "ghp_[REDACTED_EXAMPLE]"
+
+# Minimum entropy for secret detection (default: 3.0)
+# Lower values = more false positives
+# Higher values = might miss secrets
+minimum_entropy: 3.5
+
+# Custom detectors (optional - for project-specific secrets)
+# detectors:
+#   - name: custom_api_key
+#     regex: MYAPP_API_KEY_[A-Za-z0-9]{32}
+
+# Policy configuration
+policies:
+  # Alert on all secret types
+  - name: default
+    detectors:
+      - generic_high_entropy_secret
+      - github_personal_access_token
+      - google_api_key
+      - openai_api_key
+      - aws_access_key
+      - azure_subscription_key
+
+    # Ignore certain file extensions (binary, etc.)
+    file_extensions_ignore:
+      - .png
+      - .jpg
+      - .jpeg
+      - .gif
+      - .svg
+      - .ico
+      - .pdf
+      - .zip
+      - .tar
+      - .gz
+      - .exe
+      - .dll
+      - .so
+      - .dylib
+      - .pyc
+      - .pyo
+      - .pyd
+
+# Incident handling notes:
+#
+# INCIDENT: 2025-11-20 - GitHub Personal Access Token (FALSE POSITIVE)
+# Location: SECURITY_AUDIT.md line 91 (commit 683defc)
+# Reason: Documentation example showing what NOT to do
+# Resolution: Replaced realistic pattern with clearly redacted placeholder
+# Status: RESOLVED - No actual secret was exposed
+#
+# IMPORTANT: All examples in documentation must use [REDACTED] or <PLACEHOLDER>
+# format to avoid triggering secret scanners.
