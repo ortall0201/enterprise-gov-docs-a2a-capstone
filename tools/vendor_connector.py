@@ -45,15 +45,22 @@ def create_remote_vendor_agent(
     # Get vendor configuration from environment or use defaults
     host = vendor_host or os.getenv("VENDOR_SERVER_HOST", "localhost")
     port = vendor_port or int(os.getenv("VENDOR_SERVER_PORT", "8001"))
-    
-    # Construct vendor URL
-    vendor_url = f"http://{host}:{port}"
+
+    # Construct vendor URL (use HTTPS for port 443, HTTP otherwise)
+    protocol = "https" if port == 443 else "http"
+
+    # For HTTPS (port 443), don't include port in URL
+    if port == 443:
+        vendor_url = f"{protocol}://{host}"
+    else:
+        vendor_url = f"{protocol}://{host}:{port}"
+
     agent_card_url = f"{vendor_url}{AGENT_CARD_WELL_KNOWN_PATH}"
     
     print(f"\n[A2A Connector] Configuring remote vendor connection:")
     print(f"    Vendor URL: {vendor_url}")
     print(f"    Agent Card: {agent_card_url}")
-    print(f"    Protocol: A2A over HTTP")
+    print(f"    Protocol: A2A over {protocol.upper()}")
     
     # Create RemoteA2aAgent
     # This is the A2A boundary - all calls to this agent go over the network
