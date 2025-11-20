@@ -75,3 +75,36 @@ tmp/
 *password*
 credentials.json
 service-account*.json
+*token*
+*.pem
+*.key
+*.crt
+*.cer
+*.p12
+*.pfx
+auth.json
+.secrets/
+secrets/
+
+# Google API Keys (additional safety)
+*AIza*
+*google-credentials*
+
+# AWS Credentials
+.aws/
+*aws-credentials*
+
+# Azure Credentials
+*azure-credentials*
+
+# OpenAI API Keys
+*openai-api-key*
+*OPENAI_API_KEY*
+
+# Environment files (additional patterns)
+.env.production
+.env.development
+.env.staging
+.env.test
+.env.backup
+*.env.backup
