@@ -171,13 +171,13 @@ flowchart TB
     Extract --> PreFilter{🔒 Pre-Vendor Security Filter}
 
     subgraph Patterns["7 PII Pattern Types"]
-        P1[1. National ID Spain<br/>123-45-6789-X]
-        P2[2. SSN<br/>123-45-6789]
-        P3[3. Phone<br/>34 915-234-567]
-        P4[4. Email<br/>maria@ejemplo.es]
-        P5[5. Credit Card<br/>1234-5678-9012-3456]
-        P6[6. Date of Birth<br/>23 de Julio, 1990]
-        P7[7. Passport<br/>ABC-123456789]
+        P1["1. National ID Spain: 123-45-6789-X"]
+        P2["2. SSN: 123-45-6789"]
+        P3["3. Phone: 34 915-234-567"]
+        P4["4. Email: maria@ejemplo.es"]
+        P5["5. Credit Card: 1234-5678-9012-3456"]
+        P6["6. Date of Birth: 23 de Julio 1990"]
+        P7["7. Passport: ABC-123456789"]
     end
 
     PreFilter --> |Detect & Mask| Patterns
@@ -185,13 +185,13 @@ flowchart TB
     Patterns --> Masked[✅ Masked Document<br/>11 PII instances protected]
 
     subgraph MaskedData["Masked PII Examples"]
-        M1[***-**-****-X]
-        M2[***-**-6789]
-        M3[34 ***-***-567]
-        M4[m*************@ejemplo.es]
-        M5[****-****-****-3456]
-        M6[XX de XXXX, 1990]
-        M7[ABC-******789]
+        M1["XXX-XX-XXXX-X"]
+        M2["XXX-XX-6789"]
+        M3["34 XXX-XXX-567"]
+        M4["m_____@ejemplo.es"]
+        M5["XXXX-XXXX-XXXX-3456"]
+        M6["XX de XXXX, 1990"]
+        M7["ABC-XXXXXX789"]
     end
 
     Masked --> MaskedData
