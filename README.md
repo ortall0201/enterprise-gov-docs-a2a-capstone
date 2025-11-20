@@ -449,6 +449,217 @@ enterprise-gov-docs-a2a-capstone/
 
 ---
 
+## ☁️ Deployment Options: Render vs GCP
+
+### Current Production Deployment: Render
+
+**Status**: ✅ **Live at** https://docs-translator-a2a.onrender.com
+
+**Why Render for MVP/Demo**:
+- ✅ **Free tier available** - Perfect for capstone demo
+- ✅ **Fast deployment** - Git push → live in 3 minutes
+- ✅ **Zero config** - Auto-detects Python, installs dependencies
+- ✅ **HTTPS included** - Free SSL certificates
+- ✅ **Good for demos** - Shows A2A protocol working in production
+
+**Render Limitations for Enterprise**:
+- ⚠️ **No SOC 2 Type II** on free/starter tiers
+- ⚠️ **Limited compliance** - Not HIPAA/FedRAMP certified
+- ⚠️ **Shared infrastructure** - Multi-tenant environment
+- ⚠️ **US-only data residency** - No EU/Asia regions available
+- ⚠️ **Cold starts** - Free tier sleeps after 15min inactivity
+
+### Google Cloud Platform (GCP) - Enterprise Ready
+
+**Recommended for**: Production enterprise deployments
+
+#### GCP Deployment Architecture
+
+```
+┌──────────────────────────────────────────────────┐
+│  Google Cloud Platform (Enterprise Deployment)   │
+│                                                  │
+│  ┌────────────────────────────────────────────┐ │
+│  │  Cloud Run (Serverless Container)          │ │
+│  │  • Auto-scaling (0 to N instances)         │ │
+│  │  • Regional deployment (multi-region)      │ │
+│  │  • VPC networking (private endpoints)      │ │
+│  │  • Cloud Armor (DDoS protection)           │ │
+│  └────────────────────────────────────────────┘ │
+│                                                  │
+│  ┌────────────────────────────────────────────┐ │
+│  │  Cloud Storage (Document Storage)          │ │
+│  │  • Encrypted at rest (CMEK)                │ │
+│  │  • Access logging (compliance audit)       │ │
+│  │  • Data residency controls                 │ │
+│  └────────────────────────────────────────────┘ │
+│                                                  │
+│  ┌────────────────────────────────────────────┐ │
+│  │  Secret Manager (API Keys)                 │ │
+│  │  • Encrypted secrets                       │ │
+│  │  • Automatic rotation                      │ │
+│  │  • Audit logging                           │ │
+│  └────────────────────────────────────────────┘ │
+│                                                  │
+│  ┌────────────────────────────────────────────┐ │
+│  │  Cloud Logging & Monitoring                │ │
+│  │  • Centralized logs (compliance trails)    │ │
+│  │  • Real-time alerts                        │ │
+│  │  • Security Command Center integration     │ │
+│  └────────────────────────────────────────────┘ │
+└──────────────────────────────────────────────────┘
+```
+
+#### GCP Advantages for Enterprise
+
+| Feature | Render | GCP | Impact |
+|---------|--------|-----|--------|
+| **SOC 2 Type II** | ❌ Not on free tier | ✅ Platform-wide | Required for enterprise sales |
+| **HIPAA Compliant** | ❌ No | ✅ Yes (with BAA) | Healthcare industry |
+| **FedRAMP** | ❌ No | ✅ Moderate/High | Government contracts |
+| **ISO 27001** | ⚠️ Limited | ✅ Certified | International compliance |
+| **Data Residency** | 🇺🇸 US only | ✅ 40+ regions | EU GDPR, data sovereignty |
+| **Private Networking** | ❌ No | ✅ VPC/VPN | Isolated infrastructure |
+| **CMEK** | ❌ No | ✅ Yes | Customer-managed encryption |
+| **DDoS Protection** | ⚠️ Basic | ✅ Cloud Armor | Production resilience |
+| **SLA Guarantee** | ⚠️ 99% (paid) | ✅ 99.95% | Enterprise uptime |
+| **Audit Logging** | ⚠️ Limited | ✅ Comprehensive | Compliance requirements |
+
+### Security Comparison for Enterprise Compliance
+
+#### For Render Deployment (Current Demo)
+
+```
+✅ GOOD FOR:
+• POC/MVP demonstrations
+• Capstone project submissions
+• Developer testing
+• Open-source projects
+• Non-sensitive workloads
+
+⚠️ NOT SUITABLE FOR:
+• HIPAA-covered health data
+• Government classified data (FedRAMP)
+• Financial services (PCI-DSS Level 1)
+• EU customer PII (GDPR strict compliance)
+• Enterprise procurement requiring SOC 2
+```
+
+#### For GCP Deployment (Enterprise Production)
+
+```
+✅ CERTIFIED FOR:
+• Healthcare (HIPAA with BAA)
+• Government (FedRAMP Moderate/High)
+• Financial services (PCI-DSS Level 1)
+• International (ISO 27001, 27017, 27018)
+• Privacy (GDPR, CCPA compliant infrastructure)
+
+✅ ENTERPRISE FEATURES:
+• Customer-managed encryption keys (CMEK)
+• VPC Service Controls (perimeter security)
+• Private Google Access (no internet exposure)
+• Data Loss Prevention (DLP) API integration
+• Security Command Center (threat detection)
+• Access Transparency (audit who accessed what)
+```
+
+### VaaS Security Insight
+
+**Critical Point**: With VaaS model, vendor compliance matters less!
+
+```
+┌─────────────────────────────────────────────────┐
+│  Traditional SaaS Model                         │
+│  Vendor receives raw PII                        │
+│  → Vendor MUST have SOC 2 + HIPAA + FedRAMP    │
+│  → Cost: $400K+/year                            │
+└─────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────┐
+│  VaaS Model (with PII Filtering)                │
+│  Vendor receives masked data only               │
+│  → Vendor = Capability provider                 │
+│  → Reduced compliance burden                    │
+│  → Cost: $60K/year (even on Render!)           │
+└─────────────────────────────────────────────────┘
+```
+
+**Why This Matters**:
+- **Render deployment** + **VaaS model** = Small vendors can compete
+- **GCP deployment** = Extra assurance for risk-averse enterprises
+- **A2A boundary** = Security enforced regardless of vendor platform
+
+### Deployment Decision Matrix
+
+| Your Situation | Recommended Platform | Why |
+|----------------|---------------------|-----|
+| **MVP/Demo** | Render (Free tier) | Fast, free, good enough for POC |
+| **Startup (B2C)** | Render (Starter $7/mo) | Cost-effective, easy to manage |
+| **Startup (B2B)** | GCP Cloud Run | Enterprise credibility, compliance |
+| **Healthcare** | GCP (HIPAA compliant) | Required by law (BAA) |
+| **Government** | GCP (FedRAMP) | FedRAMP authorization required |
+| **Financial Services** | GCP (PCI-DSS) | Card data handling requirements |
+| **EU Customers** | GCP (EU regions) | GDPR data residency requirements |
+| **Enterprise Sales** | GCP (SOC 2) | Procurement requirement |
+
+### Migration Path: Render → GCP
+
+**When to migrate**:
+- ✅ First enterprise customer interested
+- ✅ Need SOC 2 for procurement process
+- ✅ Scaling beyond 100K requests/month
+- ✅ Data residency requirements arise
+- ✅ SLA guarantees become critical
+
+**Migration is easy** (same Docker container):
+```bash
+# Current Render deployment
+render.yaml + git push
+
+# GCP Cloud Run deployment (same code!)
+gcloud run deploy docs-translator-a2a \
+  --source . \
+  --region us-central1 \
+  --allow-unauthenticated \
+  --set-env-vars OPENAI_API_KEY=${OPENAI_API_KEY}
+
+# Takes ~5 minutes, no code changes needed
+```
+
+### Cost Comparison
+
+**Monthly costs** (estimates for 100K translations/month):
+
+| Component | Render | GCP | Notes |
+|-----------|--------|-----|-------|
+| **Compute** | $7 (Starter) | $15 (Cloud Run) | Auto-scaling on GCP |
+| **SSL/HTTPS** | Included | Included | Both provide free SSL |
+| **DDoS Protection** | Basic | $200 (Cloud Armor) | Optional on GCP |
+| **Compliance Audits** | Not included | Included | Platform-wide on GCP |
+| **Support** | Community | $29+ (support plan) | GCP has paid support tiers |
+| **Total** | **$7/month** | **$44-244/month** | Depends on features needed |
+
+**But remember VaaS savings**: $590K/year vs traditional SaaS! Platform cost is insignificant compared to compliance savings.
+
+### Recommendation for This Capstone
+
+**Current Setup (Render)**: ✅ **Perfect for demo!**
+- Shows A2A protocol working
+- Production-ready endpoint
+- Live Agent Card
+- Zero cost
+- **Proves the VaaS concept**
+
+**For Real Customers**: Offer both options
+- **Budget-conscious startups**: "Deployed on Render, enterprise filtering on your side"
+- **Enterprise buyers**: "Deployed on GCP with SOC 2, plus your internal filtering"
+- **Hybrid**: "Start on Render, migrate to GCP when you get enterprise customers"
+
+**The beauty of VaaS**: Vendor platform matters less because enterprise controls data exposure!
+
+---
+
 ## 🎓 Course Concepts Applied
 
 This project demonstrates mastery of all 5 days:
