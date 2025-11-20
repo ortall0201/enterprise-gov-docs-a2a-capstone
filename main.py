@@ -81,8 +81,8 @@ async def main():
     logger.info("=" * 80)
 
     # Import ADK components
-    from google.genai.adk.runners import Runner
-    from google.genai.adk.sessions import InMemorySessionService
+    from google.adk.runners import Runner
+    from google.adk.sessions import InMemorySessionService
 
     # Create session service for state management (Day 3 pattern)
     session_service = InMemorySessionService()
