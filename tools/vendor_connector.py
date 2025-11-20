@@ -56,51 +56,57 @@ def create_remote_vendor_agent(
         vendor_url = f"{protocol}://{host}:{port}"
 
     agent_card_url = f"{vendor_url}{AGENT_CARD_WELL_KNOWN_PATH}"
-    
+
     print(f"\n[A2A Connector] Configuring remote vendor connection:")
     print(f"    Vendor URL: {vendor_url}")
     print(f"    Agent Card: {agent_card_url}")
     print(f"    Protocol: A2A over {protocol.upper()}")
-    
+
     # Create RemoteA2aAgent
     # This is the A2A boundary - all calls to this agent go over the network
     remote_vendor = RemoteA2aAgent(
         name="docs_translator_vendor",
         description="""
         External Docs Translator vendor agent accessed via A2A protocol.
-        
+
         This vendor provides document translation services with:
         - Multi-language support (Spanish, Hebrew, Polish, Arabic, etc.)
         - Bureaucratic term annotation
         - Format preservation
         - RTL language handling
-        
+
         Security Note: This is an EXTERNAL vendor. All data sent must be
         pre-filtered for PII. All responses must be post-verified.
         """,
         agent_card=agent_card_url
     )
-    
+
+    # Store the agent_card_url as an attribute for testing
+    remote_vendor._test_agent_card_url = agent_card_url
+
     print(f"    ✓ Remote agent configured: {remote_vendor.name}")
-    
+
     return remote_vendor
 
 
 def test_vendor_connection(vendor_agent: RemoteA2aAgent) -> bool:
     """
     Test if the vendor A2A server is reachable.
-    
+
     Args:
         vendor_agent: RemoteA2aAgent to test
-    
+
     Returns:
         bool: True if vendor is reachable, False otherwise
     """
     import requests
-    
+
     try:
         # Extract agent card URL from the agent
-        agent_card_url = vendor_agent.agent_card
+        agent_card_url = getattr(vendor_agent, '_test_agent_card_url', None)
+        if not agent_card_url:
+            print("    ✗ Agent card URL not available")
+            return False
         
         print(f"\n[A2A Test] Checking vendor availability...")
         print(f"    Testing: {agent_card_url}")

@@ -9,9 +9,10 @@ These tools run in the secure government environment and are not exposed externa
 """
 
 from .ocr_tool import ocr_tool
-from .vendor_connector import create_remote_vendor_agent
+from .vendor_connector import create_remote_vendor_agent, test_vendor_connection
 
 __all__ = [
     "ocr_tool",
     "create_remote_vendor_agent",
+    "test_vendor_connection",
 ]

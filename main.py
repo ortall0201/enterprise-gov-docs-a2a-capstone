@@ -90,6 +90,7 @@ async def main():
 
     # Create runner with session management
     intake_runner = Runner(
+        app_name="enterprise_docs_intake",
         agent=intake_agent,
         session_service=session_service
     )
@@ -110,6 +111,7 @@ async def main():
 
     # Create runner with same session service for state continuity
     processing_runner = Runner(
+        app_name="enterprise_docs_processing",
         agent=processing_agent,
         session_service=session_service
     )

@@ -156,6 +156,7 @@ async def main_with_observability():
     print("=" * 100)
 
     intake_runner = Runner(
+        app_name="enterprise_docs_intake",
         agent=intake_agent,
         session_service=session_service
     )
@@ -207,6 +208,7 @@ async def main_with_observability():
     print("   If you want to save it, you'd add a file write step.\n")
 
     processing_runner = Runner(
+        app_name="enterprise_docs_processing",
         agent=processing_agent,
         session_service=session_service
     )
