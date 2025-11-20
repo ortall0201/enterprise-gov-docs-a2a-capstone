@@ -80,15 +80,15 @@ sequenceDiagram
     IA-->>PA: document_id + metadata
 
     PA->>OCR: Extract text
-    OCR-->>PA: Full Spanish text<br/>(428 words)
+    OCR-->>PA: Full Spanish text 428 words
 
     rect rgb(255, 107, 107, 0.3)
         Note over PA,SF: CRITICAL: Pre-Vendor PII Masking
-        PA->>SF: security_filter(text, mode="mask")
+        PA->>SF: security_filter text mode mask
         SF->>SF: Detect 7 PII patterns
-        SF->>SF: Mask: "123-45-6789-X" → "***-**-****-X"
-        SF->>SF: Mask: "maria@ejemplo.es" → "m*****@ejemplo.es"
-        SF-->>PA: Masked text (7 instances)
+        SF->>SF: Mask: 123-45-6789-X to XXX-XX-XXXX-X
+        SF->>SF: Mask: maria@ejemplo.es to m-REDACTED-@ejemplo.es
+        SF-->>PA: Masked text 7 instances
     end
 
     rect rgb(74, 171, 247, 0.3)
@@ -96,7 +96,7 @@ sequenceDiagram
         PA->>A2A: Delegate to sub-agent
         A2A->>VS: GET /.well-known/agent-card.json
         VS-->>A2A: Agent capabilities
-        A2A->>VS: POST /streams<br/>(masked Spanish text)
+        A2A->>VS: POST /streams with masked text
         VS->>VA: Route to translation agent
         VA->>VA: translate_document()
         VA-->>VS: English translation
@@ -106,9 +106,9 @@ sequenceDiagram
 
     rect rgb(81, 207, 102, 0.3)
         Note over PA,SF: Post-Vendor Verification
-        PA->>SF: security_filter(response, mode="verify")
+        PA->>SF: security_filter response mode verify
         SF->>SF: Check for PII leakage
-        SF-->>PA: {"is_safe": true}
+        SF-->>PA: is_safe: true
     end
 
     PA->>PA: Compile final result
@@ -170,13 +170,13 @@ graph TD
     B --> C6[Pattern 6: Credit Card]
     B --> C7[Pattern 7: Passport<br/>ABC-123456789]
 
-    C1 --> D1[***-**-****-X]
-    C2 --> D2[+34 ***-***-567]
-    C3 --> D3[m*************@ejemplo.es]
+    C1 --> D1[XXX-XX-XXXX-X]
+    C2 --> D2[+34 XXX-XXX-567]
+    C3 --> D3[m-REDACTED-@ejemplo.es]
     C4 --> D4[XX de XXXX, 1990]
     C5 --> D5[Masked if found]
     C6 --> D6[Masked if found]
-    C7 --> D7[ABC-******789]
+    C7 --> D7[ABC-XXXXXX789]
 
     D1 --> E[Masked Document]
     D2 --> E
@@ -187,12 +187,12 @@ graph TD
     D7 --> E
 
     E --> F[A2A Boundary]
-    F --> G[Vendor receives<br/>ONLY masked data]
+    F --> G[Vendor receives ONLY masked data]
 
     G --> H[Translation Result]
-    H --> I{Security Filter<br/>Mode: verify}
+    H --> I{Security Filter Mode: verify}
     I -->|No PII leakage| J[Safe to return]
-    I -->|PII detected| K[Block & Alert]
+    I -->|PII detected| K[Block and Alert]
 
     style B fill:#ff6b6b,stroke:#c92a2a,color:#fff
     style F fill:#4dabf7,stroke:#1971c2,color:#fff
