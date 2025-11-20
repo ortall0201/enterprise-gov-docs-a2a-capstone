@@ -91,7 +91,7 @@ async def main_with_observability():
         print("   Continuing with demo (vendor call may fail)...\n")
     else:
         print("\n✅ VENDOR CONNECTION ESTABLISHED")
-        print(f"   → Agent Card URL: {remote_vendor.agent_card}")
+        print(f"   → Agent Card URL: {remote_vendor._test_agent_card_url}")
         print(f"   → Vendor Name: {remote_vendor.name}")
         print(f"   → Protocol: A2A over HTTPS\n")
 
