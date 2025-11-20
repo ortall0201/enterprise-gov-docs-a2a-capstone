@@ -34,30 +34,30 @@ A **production-ready VaaS (Vendor-as-a-Service)** system that enables small AI v
 
 ```mermaid
 graph TB
-    subgraph "🏢 ENTERPRISE (Your Desktop)"
-        User[👤 User] --> Main[main.py<br/>Demo Script]
-        Main --> IA[IntakeAgent<br/>Document Validation]
-        Main --> PA[ProcessingAgent<br/>5-Step Pipeline]
+    subgraph Enterprise["🏢 ENTERPRISE - Your Desktop"]
+        User[👤 User] --> Main[main.py Demo Script]
+        Main --> IA[IntakeAgent Document Validation]
+        Main --> PA[ProcessingAgent 5-Step Pipeline]
 
-        subgraph "Internal Tools"
-            OCR[OCR Tool<br/>Text Extraction]
-            SF[Security Filter<br/>7 PII Patterns]
+        subgraph Tools["Internal Tools"]
+            OCR[OCR Tool Text Extraction]
+            SF[Security Filter 7 PII Patterns]
         end
 
         PA --> OCR
         PA --> SF
-        PA --> RMA[RemoteA2aAgent<br/>A2A Consumer]
+        PA --> RMA[RemoteA2aAgent A2A Consumer]
     end
 
-    subgraph "🌐 A2A BOUNDARY"
-        RMA -->|"HTTPS<br/>Agent Card + Streams"| A2AEndpoint[/.well-known/agent-card.json<br/>/invoke /stream]
+    subgraph Boundary["🌐 A2A BOUNDARY"]
+        RMA -->|HTTPS Agent Card + Streams| A2AEndpoint[A2A Endpoints Agent Card & APIs]
     end
 
-    subgraph "☁️ PRODUCTION VENDOR (Render)"
-        A2AEndpoint --> A2AServer[docs-translator-a2a.onrender.com<br/>FastAPI A2A Server]
-        A2AServer --> TransAgent[Translation Agent<br/>OpenAI GPT-4o]
-        TransAgent --> T1[translate_document<br/>tool]
-        TransAgent --> T2[validate_translation<br/>tool]
+    subgraph Vendor["☁️ PRODUCTION VENDOR - Render"]
+        A2AEndpoint --> A2AServer[docs-translator-a2a.onrender.com FastAPI A2A Server]
+        A2AServer --> TransAgent[Translation Agent OpenAI GPT-4o]
+        TransAgent --> T1[translate_document tool]
+        TransAgent --> T2[validate_translation tool]
     end
 
     style RMA fill:#4dabf7,stroke:#1971c2,color:#fff
@@ -87,9 +87,11 @@ sequenceDiagram
 
     rect rgb(255, 107, 107, 0.3)
         Note over PA,SF: 🔒 CRITICAL: Pre-Vendor PII Masking
-        PA->>SF: security_filter(text, mode="mask")
-        SF->>SF: Detect 7 PII patterns<br/>• National ID: 123-45-6789-X<br/>• Email: maria@ejemplo.es<br/>• Phone, DOB, etc.
-        SF->>SF: Mask all PII<br/>• ***-**-****-X<br/>• m*****@ejemplo.es
+        PA->>SF: security_filter(text, mode=mask)
+        SF->>SF: Detect 7 PII patterns
+        Note right of SF: National ID: 123-45-6789-X<br/>Email: maria@ejemplo.es<br/>Phone, DOB, etc.
+        SF->>SF: Mask all PII
+        Note right of SF: ***-**-****-X<br/>m*****@ejemplo.es
         SF-->>PA: Masked text (11 instances)
     end
 
@@ -98,9 +100,9 @@ sequenceDiagram
         PA->>A2A: Delegate to sub-agent
         A2A->>Render: GET /.well-known/agent-card.json
         Render-->>A2A: Agent capabilities
-        A2A->>Render: POST /invoke<br/>(masked text only)
+        A2A->>Render: POST /invoke (masked text only)
         Render->>Trans: Route to translation
-        Trans->>Trans: translate_document()<br/>(OpenAI GPT-4o)
+        Trans->>Trans: translate_document() OpenAI GPT-4o
         Trans-->>Render: English translation
         Render-->>A2A: Translation result
         A2A-->>PA: Return to parent
@@ -108,7 +110,7 @@ sequenceDiagram
 
     rect rgb(81, 207, 102, 0.3)
         Note over PA,SF: ✅ Post-Vendor Verification
-        PA->>SF: security_filter(response, mode="verify")
+        PA->>SF: security_filter(response, mode=verify)
         SF->>SF: Check for PII leakage
         SF-->>PA: is_safe: true ✓
     end
@@ -121,23 +123,23 @@ sequenceDiagram
 
 ```mermaid
 graph LR
-    subgraph "🖥️ Local Enterprise Environment"
-        Main[main.py] --> Session[InMemorySessionService<br/>State Management]
+    subgraph Local["🖥️ Local Enterprise Environment"]
+        Main[main.py] --> Session[InMemorySessionService State Management]
         Main --> IA[IntakeAgent]
         Main --> PA[ProcessingAgent]
 
-        subgraph "Agents Layer"
+        subgraph Agents["Agents Layer"]
             IA
             PA
         end
 
-        subgraph "Tools Layer"
-            OCR[ocr_tool.py<br/>Text Extraction]
-            VC[vendor_connector.py<br/>RemoteA2aAgent Factory]
+        subgraph Tools["Tools Layer"]
+            OCR[ocr_tool.py Text Extraction]
+            VC[vendor_connector.py RemoteA2aAgent Factory]
         end
 
-        subgraph "Security Layer"
-            SEC[security/policy.py<br/>7 PII Patterns<br/>Mask & Verify]
+        subgraph Security["Security Layer"]
+            SEC[security/policy.py 7 PII Patterns Mask & Verify]
         end
 
         PA --> OCR
@@ -146,11 +148,11 @@ graph LR
         VC --> RMA[RemoteA2aAgent]
     end
 
-    RMA -.->|"HTTPS (Port 443)"| Cloud
+    RMA -.->|HTTPS Port 443| Cloud
 
-    subgraph "☁️ Render Cloud (Production)"
-        Cloud[docs-translator-a2a<br/>.onrender.com] --> Server[a2a_server.py<br/>FastAPI]
-        Server --> Agent[Translation Agent<br/>OpenAI GPT-4o]
+    subgraph Render["☁️ Render Cloud Production"]
+        Cloud[docs-translator-a2a.onrender.com] --> Server[a2a_server.py FastAPI]
+        Server --> Agent[Translation Agent OpenAI GPT-4o]
         Agent --> T1[translate_document]
         Agent --> T2[validate_translation]
     end
@@ -158,6 +160,63 @@ graph LR
     style RMA fill:#4dabf7,stroke:#1971c2,color:#fff
     style Cloud fill:#51cf66,stroke:#2f9e44,color:#fff
     style SEC fill:#ff6b6b,stroke:#c92a2a,color:#fff
+```
+
+### PII Masking Architecture
+
+```mermaid
+flowchart TB
+    Start[📄 Document with PII] --> Extract[OCR Extraction 428 words]
+
+    Extract --> PreFilter{🔒 Pre-Vendor Security Filter}
+
+    subgraph Patterns["7 PII Pattern Types"]
+        P1[1. National ID Spain<br/>123-45-6789-X]
+        P2[2. SSN<br/>123-45-6789]
+        P3[3. Phone<br/>34 915-234-567]
+        P4[4. Email<br/>maria@ejemplo.es]
+        P5[5. Credit Card<br/>1234-5678-9012-3456]
+        P6[6. Date of Birth<br/>23 de Julio, 1990]
+        P7[7. Passport<br/>ABC-123456789]
+    end
+
+    PreFilter --> |Detect & Mask| Patterns
+
+    Patterns --> Masked[✅ Masked Document<br/>11 PII instances protected]
+
+    subgraph MaskedData["Masked PII Examples"]
+        M1[***-**-****-X]
+        M2[***-**-6789]
+        M3[34 ***-***-567]
+        M4[m*************@ejemplo.es]
+        M5[****-****-****-3456]
+        M6[XX de XXXX, 1990]
+        M7[ABC-******789]
+    end
+
+    Masked --> MaskedData
+
+    MaskedData --> A2ABoundary[🌐 A2A BOUNDARY HTTPS]
+
+    A2ABoundary --> Vendor[☁️ Vendor Translation masked text only]
+
+    Vendor --> Response[📨 Vendor Response]
+
+    Response --> PostFilter{✅ Post-Vendor Verification}
+
+    PostFilter --> |Scan for PII Leakage| Check[Check Response Safety]
+
+    Check --> Safe{PII Safe?}
+
+    Safe -->|Yes| Final[✅ Final Document Clean & Translated]
+    Safe -->|No| Block[🚫 Block Response Alert Security]
+
+    style PreFilter fill:#ff6b6b,stroke:#c92a2a,color:#fff
+    style A2ABoundary fill:#4dabf7,stroke:#1971c2,color:#fff
+    style Vendor fill:#51cf66,stroke:#2f9e44,color:#fff
+    style PostFilter fill:#ff6b6b,stroke:#c92a2a,color:#fff
+    style Final fill:#51cf66,stroke:#2f9e44,color:#fff
+    style Block fill:#ff6b6b,stroke:#c92a2a,color:#fff
 ```
 
 ---
