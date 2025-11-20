@@ -134,7 +134,7 @@ graph LR
         end
 
         subgraph "Security Layer"
-            SP[security/policy.py<br/>7 PII Patterns<br/>mask() + verify()]
+            SP["security/policy.py - 7 PII Patterns - mask and verify"]
         end
 
         PA --> OCR
@@ -170,9 +170,9 @@ graph TD
     B --> C6[Pattern 6: Credit Card]
     B --> C7[Pattern 7: Passport<br/>ABC-123456789]
 
-    C1 --> D1[XXX-XX-XXXX-X]
-    C2 --> D2[+34 XXX-XXX-567]
-    C3 --> D3[m-REDACTED-@ejemplo.es]
+    C1 --> D1["XXX-XX-XXXX-X"]
+    C2 --> D2["+34 XXX-XXX-567"]
+    C3 --> D3["m_REDACTED@ejemplo.es"]
     C4 --> D4[XX de XXXX, 1990]
     C5 --> D5[Masked if found]
     C6 --> D6[Masked if found]
