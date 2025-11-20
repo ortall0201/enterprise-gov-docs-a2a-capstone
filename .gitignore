@@ -108,3 +108,8 @@ secrets/
 .env.test
 .env.backup
 *.env.backup
+
+# Local screenshots and reference files
+github_overview_full.png
+*.screenshot.png
+screenshots/
