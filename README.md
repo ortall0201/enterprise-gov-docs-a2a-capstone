@@ -14,9 +14,11 @@ A **production-ready VaaS (Vendor-as-a-Service)** system that enables small AI v
 
 ### 🔗 Live Demo
 
+**🎉 Always-On**: Service upgraded to Render Starter tier - no cold starts!
+
 | Component | URL | Description |
 |-----------|-----|-------------|
-| **Production A2A Server** | https://docs-translator-a2a.onrender.com | Live vendor service on Render |
+| **Production A2A Server** | https://docs-translator-a2a.onrender.com | Live 24/7 on Render Starter ($7/mo) |
 | **Agent Card (Live)** | https://docs-translator-a2a.onrender.com/.well-known/agent-card.json | A2A capability discovery |
 | **Health Check** | https://docs-translator-a2a.onrender.com/health | Service status |
 | **GitHub Repository** | https://github.com/ortall0201/enterprise-gov-docs-a2a-capstone | Source code |
@@ -451,23 +453,27 @@ enterprise-gov-docs-a2a-capstone/
 
 ## ☁️ Deployment Options: Render vs GCP
 
-### Current Production Deployment: Render
+### Current Production Deployment: Render Starter Tier
 
-**Status**: ✅ **Live at** https://docs-translator-a2a.onrender.com
+**Status**: ✅ **Live 24/7 at** https://docs-translator-a2a.onrender.com
 
-**Why Render for MVP/Demo**:
-- ✅ **Free tier available** - Perfect for capstone demo
+**Deployment Tier**: **Starter ($7/month)** - Always-on, no cold starts
+
+**Why Render Starter for Production Demo**:
+- ✅ **Always-on** - No cold starts (upgraded from free tier)
 - ✅ **Fast deployment** - Git push → live in 3 minutes
 - ✅ **Zero config** - Auto-detects Python, installs dependencies
-- ✅ **HTTPS included** - Free SSL certificates
-- ✅ **Good for demos** - Shows A2A protocol working in production
+- ✅ **HTTPS included** - Free SSL certificates (automatic)
+- ✅ **Production-ready** - Shows A2A protocol working 24/7
+- ✅ **Cost-effective** - $7/month vs $400K/year traditional compliance
+- ✅ **Instant response** - 2-3 seconds for translations (no wake-up delay)
 
-**Render Limitations for Enterprise**:
-- ⚠️ **No SOC 2 Type II** on free/starter tiers
+**Render Limitations for Strict Enterprise**:
+- ⚠️ **No SOC 2 Type II** on starter tier (available on higher tiers)
 - ⚠️ **Limited compliance** - Not HIPAA/FedRAMP certified
 - ⚠️ **Shared infrastructure** - Multi-tenant environment
 - ⚠️ **US-only data residency** - No EU/Asia regions available
-- ⚠️ **Cold starts** - Free tier sleeps after 15min inactivity
+- ⚠️ **99% SLA** (vs 99.95% on GCP)
 
 ### Google Cloud Platform (GCP) - Enterprise Ready
 
@@ -594,9 +600,10 @@ enterprise-gov-docs-a2a-capstone/
 
 | Your Situation | Recommended Platform | Why |
 |----------------|---------------------|-----|
-| **MVP/Demo** | Render (Free tier) | Fast, free, good enough for POC |
+| **POC/MVP** | Render (Free tier) | Fast, free, good for initial testing |
+| **Capstone Demo** | Render (Starter $7/mo) ← **Current** | Always-on, production-ready demo |
 | **Startup (B2C)** | Render (Starter $7/mo) | Cost-effective, easy to manage |
-| **Startup (B2B)** | GCP Cloud Run | Enterprise credibility, compliance |
+| **Startup (B2B)** | Render (Starter) or GCP | Depends on customer requirements |
 | **Healthcare** | GCP (HIPAA compliant) | Required by law (BAA) |
 | **Government** | GCP (FedRAMP) | FedRAMP authorization required |
 | **Financial Services** | GCP (PCI-DSS) | Card data handling requirements |
@@ -644,19 +651,22 @@ gcloud run deploy docs-translator-a2a \
 
 ### Recommendation for This Capstone
 
-**Current Setup (Render)**: ✅ **Perfect for demo!**
-- Shows A2A protocol working
-- Production-ready endpoint
-- Live Agent Card
-- Zero cost
-- **Proves the VaaS concept**
+**Current Setup (Render Starter)**: ✅ **Production-ready demo!**
+- ✅ **Always-on** - No cold starts ($7/month investment)
+- ✅ **Shows A2A protocol** working 24/7 in production
+- ✅ **Live Agent Card** - Instant access for judges
+- ✅ **Professional** - Demonstrates commitment to quality
+- ✅ **Proves the VaaS concept** - Cost-effective vendor deployment
+
+**Investment**: $7/month to show production-readiness (vs $400K/year traditional SaaS!)
 
 **For Real Customers**: Offer both options
-- **Budget-conscious startups**: "Deployed on Render, enterprise filtering on your side"
-- **Enterprise buyers**: "Deployed on GCP with SOC 2, plus your internal filtering"
-- **Hybrid**: "Start on Render, migrate to GCP when you get enterprise customers"
+- **Budget-conscious startups**: "Deployed on Render Starter ($7/mo), enterprise filtering on your side"
+- **Mid-market**: "Render Starter for capability, your internal PII filtering provides security"
+- **Enterprise buyers**: "Deployed on GCP with SOC 2, plus your internal filtering for defense-in-depth"
+- **Hybrid**: "Start on Render Starter, migrate to GCP when scaling or compliance requires"
 
-**The beauty of VaaS**: Vendor platform matters less because enterprise controls data exposure!
+**The beauty of VaaS**: Vendor platform matters less because enterprise controls data exposure at the A2A boundary!
 
 ---
 
@@ -863,10 +873,14 @@ Get a free key at: https://aistudio.google.com/app/apikey
 pip install -r requirements.txt
 ```
 
-### Service is slow (free tier cold start)
+### Service is slow on first request
 
-**Expected**: Render free tier sleeps after 15min inactivity
-- First request: 30-60 seconds (cold start)
+**Note**: Service upgraded to Starter tier - always-on (no cold starts!)
+- **Expected response time**: 2-3 seconds consistently
+- **No wake-up delay**: Service runs 24/7
+
+**If using free tier locally**:
+- First request after sleep: 30-60 seconds
 - Subsequent requests: 2-3 seconds
 
 ---
