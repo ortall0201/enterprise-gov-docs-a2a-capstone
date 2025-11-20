@@ -12,6 +12,8 @@
 
 A **production-ready VaaS (Vendor-as-a-Service)** system that enables small AI vendors to sell to enterprises without $100K+ compliance costs. Uses **A2A protocol** to create a security boundary where enterprises filter PII before sending to vendors.
 
+**Based on**: [Docs Translator](https://github.com/ortall0201/Docs_Translator) - A real CrewAI-based translation SaaS application, now enhanced with A2A protocol to serve enterprise customers through secure cross-organizational integration.
+
 ### 🔗 Live Demo
 
 **🎉 Always-On**: Service upgraded to Render Starter tier - no cold starts!
@@ -829,8 +831,9 @@ python main.py
 
 ### Repositories
 
-- **This Project**: https://github.com/ortall0201/enterprise-gov-docs-a2a-capstone
-- **Production SaaS** (untouched): https://docs-translator.onrender.com
+- **This Project (Enterprise A2A Capstone)**: https://github.com/ortall0201/enterprise-gov-docs-a2a-capstone
+- **Docs Translator (Original SaaS)**: https://github.com/ortall0201/Docs_Translator
+- **Production SaaS Deployment**: https://docs-translator.onrender.com
 
 ### Resources
 
