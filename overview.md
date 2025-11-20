@@ -1,16 +1,26 @@
 # Enterprise Government Document Processing - Complete Technical Overview
 
+**🔗 Quick Links**:
+- **Live A2A Server**: https://docs-translator-a2a.onrender.com
+- **Agent Card (JSON)**: https://docs-translator-a2a.onrender.com/.well-known/agent-card.json
+- **Health Check**: https://docs-translator-a2a.onrender.com/health
+- **GitHub Repository**: https://github.com/ortall0201/enterprise-gov-docs-a2a-capstone
+- **Quick Start**: See [README.md](./README.md) | **Production Setup**: See [PRODUCTION_SETUP.md](./PRODUCTION_SETUP.md)
+
+---
+
 ## Table of Contents
 1. [Project Identity](#project-identity)
-2. [Architecture Diagrams](#architecture-diagrams)
-3. [The Problem & Solution](#the-problem--solution)
-4. [Technology Stack](#technology-stack)
-5. [Project Structure](#project-structure)
-6. [Data Flow: End-to-End](#data-flow-end-to-end)
-7. [Key Components](#key-components)
-8. [Business Model: VaaS](#business-model-vaas)
-9. [Running the Project](#running-the-project)
-10. [Course Concepts Applied](#course-concepts-applied)
+2. [Production Architecture](#production-architecture)
+3. [Architecture Diagrams](#architecture-diagrams)
+4. [The Problem & Solution](#the-problem--solution)
+5. [Technology Stack](#technology-stack)
+6. [Project Structure](#project-structure)
+7. [Data Flow: End-to-End](#data-flow-end-to-end)
+8. [Key Components](#key-components)
+9. [Business Model: VaaS](#business-model-vaas)
+10. [Running the Project](#running-the-project)
+11. [Course Concepts Applied](#course-concepts-applied)
 
 ---
 
@@ -21,6 +31,53 @@
 **The Innovation**: Uses A2A (Agent-to-Agent) protocol to create a **liability boundary** where enterprises filter PII *before* sending to vendors, transforming vendors from "data processors" to "capability providers."
 
 **Built For**: Kaggle 5-Day AI Agents Intensive - Day 5 Capstone (A2A Communication)
+
+---
+
+## Production Architecture
+
+### Live Deployment Status
+
+```mermaid
+graph LR
+    subgraph "🖥️ Local (Your Desktop)"
+        You[👤 You run python main.py] --> Enterprise[Enterprise Agents<br/>IntakeAgent + ProcessingAgent]
+    end
+
+    subgraph "🌐 Internet (HTTPS)"
+        Enterprise -->|"A2A Protocol"| A2A[Agent Card<br/>https://docs-translator-a2a<br/>.onrender.com]
+    end
+
+    subgraph "☁️ Render Cloud (Production)"
+        A2A --> Render[FastAPI A2A Server<br/>Port 8001]
+        Render --> OpenAI[OpenAI GPT-4o<br/>Translation Service]
+    end
+
+    style Enterprise fill:#4dabf7,stroke:#1971c2,color:#fff
+    style A2A fill:#51cf66,stroke:#2f9e44,color:#fff
+    style Render fill:#51cf66,stroke:#2f9e44,color:#fff
+```
+
+### Production URLs
+
+| Component | URL | Status |
+|-----------|-----|--------|
+| **A2A Server** | https://docs-translator-a2a.onrender.com | ✅ Live |
+| **Agent Card** | https://docs-translator-a2a.onrender.com/.well-known/agent-card.json | ✅ Live |
+| **Health Check** | https://docs-translator-a2a.onrender.com/health | ✅ Live |
+| **Invoke Endpoint** | POST https://docs-translator-a2a.onrender.com/invoke | ✅ Live |
+| **Stream Endpoint** | POST https://docs-translator-a2a.onrender.com/stream | ✅ Live |
+
+### How It Works (Production)
+
+1. **You run** `python main.py` **on your desktop**
+2. **RemoteA2aAgent** fetches Agent Card from Render (HTTPS)
+3. **Enterprise agents** send masked PII to Render via A2A
+4. **Render service** translates using OpenAI GPT-4o
+5. **Translation** returns via A2A protocol
+6. **Your local agents** verify security and compile results
+
+**Key Point**: The vendor (Render) never touches your raw data - only masked PII crosses the HTTPS boundary!
 
 ---
 
