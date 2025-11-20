@@ -349,6 +349,61 @@ Demo Complete!
 
 ---
 
+## 🔍 Observability & Testing
+
+### ADK Web UI - Visual A2A Flow Inspection
+
+For **interactive observability** with visual agent flow, use the ADK Web UI:
+
+```bash
+# Start the ADK Web UI with A2A support
+python -m google.adk.cli web --log_level DEBUG --a2a --port 8000 agents_web_ui
+
+# Open browser to: http://localhost:8000
+```
+
+**What you'll see:**
+- 🌐 Real-time agent chat interface
+- 🌐 Tool call visualization (OCR, security_filter)
+- 🌐 **Sub-agent A2A calls** to production Render server
+- 🌐 Request/response inspection
+- 🌐 Session state management
+- 🌐 Debug console with HTTP logs
+
+**Key observation:** When using `processing_agent`, you'll see the sub-agent call to `docs_translator_vendor` - this is the A2A HTTPS boundary crossing!
+
+### Documentation
+
+- **[OBSERVABILITY_GUIDE.md](OBSERVABILITY_GUIDE.md)** - Complete guide to A2A data flow and observability methods
+- **[OBSERVABILITY_CHECK.md](OBSERVABILITY_CHECK.md)** - Hands-on testing prompts and verification checklist
+- **[SECURITY_AUDIT.md](SECURITY_AUDIT.md)** - Security verification and PII protection audit
+
+### Quick Test Prompt
+
+In the ADK Web UI, select `processing_agent` and send:
+
+```
+Process the document at C:\Users\user\Desktop\enterprise-gov-docs-a2a-capstone\samples\sample_document.txt
+
+Follow the complete pipeline:
+1. Extract text with OCR
+2. Apply pre-vendor security filtering
+3. Send to external vendor for translation (Spanish to English)
+4. Verify vendor response
+5. Show me where the translated text ends up
+
+Document type: birth_certificate
+```
+
+Watch for:
+- ✅ `ocr_tool` execution
+- ✅ `security_filter` (pre) - PII masking
+- ✅ **Sub-agent call** - A2A boundary crossing
+- ✅ `security_filter` (post) - Response verification
+- ✅ Translation returned in chat
+
+---
+
 ## 📁 Project Structure
 
 ```
@@ -357,6 +412,14 @@ enterprise-gov-docs-a2a-capstone/
 │   ├── __init__.py
 │   ├── intake_agent.py         # Document validation agent
 │   └── processing_agent.py     # Multi-step pipeline with A2A
+│
+├── agents_web_ui/               # ADK Web UI agent structure
+│   ├── intake_agent/
+│   │   ├── __init__.py
+│   │   └── agent.py            # Web UI compatible agent
+│   └── processing_agent/
+│       ├── __init__.py
+│       └── agent.py            # Web UI compatible agent (with A2A)
 │
 ├── tools/                       # Internal tools
 │   ├── __init__.py

@@ -77,24 +77,89 @@ python observability_demo.py
 - 🔍 Session state changes
 - 🔍 Internal agent reasoning
 
-### Method 3: Using ADK Web UI (if available)
+### Method 3: Using ADK Web UI (Interactive Browser Interface) ⭐ RECOMMENDED
 
-```bash
-# Run with ADK's built-in web server
-python -m google.adk.web --port 8000 &
+The ADK Web UI provides a **visual, interactive interface** to observe the A2A flow in real-time.
 
-# Then run your demo
-python observability_demo.py
+#### Setup: Agent Directory Structure
 
-# Open browser
-open http://localhost:8000
+The ADK Web UI requires agents in a specific directory structure:
+```
+agents_web_ui/
+├── intake_agent/
+│   ├── __init__.py      # Exports the agent
+│   └── agent.py         # Agent definition (LlmAgent instance)
+└── processing_agent/
+    ├── __init__.py
+    └── agent.py
 ```
 
-**Web UI features:**
-- 🌐 Visual agent flow diagram
-- 🌐 Tool call inspection
-- 🌐 Session state viewer
-- 🌐 Real-time execution trace
+**Key requirement:** Each agent must be exposed as a module-level `agent` variable in `agent.py`.
+
+#### Launch Command
+
+```bash
+# Start ADK Web UI with A2A support and debug logging
+python -m google.adk.cli web --log_level DEBUG --a2a --port 8000 agents_web_ui
+```
+
+**Command breakdown:**
+- `python -m google.adk.cli web` - Launches ADK's FastAPI web server
+- `--log_level DEBUG` - Enables detailed logging (see A2A HTTP calls)
+- `--a2a` - Enables A2A protocol endpoint support
+- `--port 8000` - Server port (default: 127.0.0.1:8000)
+- `agents_web_ui` - Directory containing agent subdirectories
+
+#### Access the Web UI
+
+Open your browser to: **http://localhost:8000**
+
+You'll see:
+- 🌐 **Agent selector** - Choose between intake_agent and processing_agent
+- 🌐 **Chat interface** - Send prompts and see responses
+- 🌐 **Tool call visualization** - Watch OCR, security_filter execute
+- 🌐 **Sub-agent calls** - SEE the A2A boundary crossing in real-time
+- 🌐 **Session management** - Track conversation state
+- 🌐 **Debug console** - View internal logs
+
+#### What You'll Observe
+
+When you interact with **processing_agent**, you'll see:
+
+1. **Tool Call: `ocr_tool`**
+   - Extracts text from document
+   - Output visible in UI
+
+2. **Tool Call: `security_filter` (stage="pre")**
+   - Masks PII before vendor
+   - Shows [PERSON_1], [SSN_1] replacements
+
+3. **🔥 Sub-Agent Call: `docs_translator_vendor`** ← **A2A BOUNDARY!**
+   - This is the RemoteA2aAgent
+   - Calls: https://docs-translator-a2a.onrender.com/invoke
+   - You'll see the request/response in the UI
+
+4. **Tool Call: `security_filter` (stage="post")**
+   - Verifies vendor response
+   - Checks for PII leakage
+
+5. **Final Response**
+   - English translation returned to enterprise
+   - Displayed in chat interface
+
+#### Verify A2A Connection
+
+In the terminal running the web server, you'll see:
+```
+2025-11-20 23:38:46,240 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): docs-translator-a2a.onrender.com:443
+2025-11-20 23:38:46,745 - urllib3.connectionpool - DEBUG - https://docs-translator-a2a.onrender.com:443 "GET /.well-known/agent-card.json HTTP/1.1" 200 937
+```
+
+This proves the A2A connection is live!
+
+#### Stop the Web UI
+
+Press `Ctrl+C` in the terminal running the server.
 
 ---
 
