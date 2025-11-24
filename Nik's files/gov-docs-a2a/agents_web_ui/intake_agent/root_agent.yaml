@@ -1,9 +1,15 @@
-root_agent:
-  kind: llm
-  name: "Docs Translator Root Agent"
-  instruction: |
-    You are the root agent for the Docs Translator enterprise app...
-  model: "models/gemini-1.5-pro"   # or whatever they use
-  tools:
-    - some_tool
-    - another_tool
+name: root_agent
+
+instruction: |
+  You are the root agent for this application.
+  Your job is to coordinate the other agents and ensure tasks run correctly.
+
+model:
+  provider: google
+  name: gemini-2.5-flash-lite
+
+tools:
+  - some_tool
+  - another_tool
+
+
