@@ -1,2 +1,9 @@
-agent_module: agent
-agent_function: get_root_agent
+root_agent:
+  kind: llm
+  name: "Docs Translator Root Agent"
+  instruction: |
+    You are the root agent for the Docs Translator enterprise app...
+  model: "models/gemini-1.5-pro"   # or whatever they use
+  tools:
+    - some_tool
+    - another_tool
